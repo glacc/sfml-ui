@@ -9,14 +9,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="UI\GtkHelper.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="UI\GtkHelper.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="SFML.Net" Version="2.6.0" />
   </ItemGroup>
 
