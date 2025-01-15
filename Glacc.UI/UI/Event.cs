@@ -55,6 +55,9 @@ namespace Glacc.UI
         public static bool textEntered = false;
         public static string textUnicode = "";
 
+        /* Window Events */
+        public static bool resized = false;
+
         public static void PushState(int relX, int relY)
         {
             mouseStateStack.Add(new MouseState(mouseX, mouseY, mouseAvailable, currentViewport));
@@ -177,6 +180,11 @@ namespace Glacc.UI
                 mouseScrollVelHorz += e.Delta;
         }
 
+        static void OnWindowResize(object? sender, SizeEventArgs e)
+        {
+            resized = true;
+        }
+
         public static void ApplyEventHandlers(Window? window)
         {
             if (window == null)
@@ -189,6 +197,7 @@ namespace Glacc.UI
             window.MouseButtonPressed += new EventHandler<MouseButtonEventArgs>(OnMousePress);
             window.MouseButtonReleased += new EventHandler<MouseButtonEventArgs>(OnMouseRelease);
             window.MouseWheelScrolled += new EventHandler<MouseWheelScrollEventArgs>(OnMouseScroll);
+            window.Resized += new EventHandler<SizeEventArgs>(OnWindowResize);
         }
 
         // Will be combined back later?
@@ -216,6 +225,8 @@ namespace Glacc.UI
             mouseScroll = false;
             mouseScrollVelVert = 0f;
             mouseScrollVelHorz = 0f;
+
+            resized = false;
 
             ResetPossiblyRepeatedState();
         }

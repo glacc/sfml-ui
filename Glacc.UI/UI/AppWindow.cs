@@ -1,4 +1,5 @@
 ﻿using SFML.Graphics;
+using SFML.Window;
 using System.Diagnostics;
 
 namespace Glacc.UI
@@ -37,6 +38,7 @@ namespace Glacc.UI
                 m_height = value;
             }
         }
+        public bool resizable = false;
 
         float m_updateTickrate = 60f;
         float timeEachUpdate;
@@ -73,11 +75,42 @@ namespace Glacc.UI
         }
 
         void OnClose(object? sender, EventArgs e)
+            => renderWindow?.Close();
+
+        void OnResize(object? sender, SizeEventArgs e)
         {
-            if (sender == null)
+            if (renderWindow == null)
                 return;
 
-            renderWindow?.Close();
+            uint newWidth = e.Width;
+            uint newHeight = e.Height;
+
+            m_width = (int)newWidth;
+            m_height = (int)newHeight;
+
+            renderWindow.SetView
+            (
+                new View
+                (
+                    new FloatRect
+                    (
+                        0f,
+                        0f,
+                        m_width,
+                        m_height
+                    )
+                )
+            );
+
+            if (renderTexture == null)
+                return;
+            renderTexture.Dispose();
+            renderTexture = new RenderTexture((uint)m_width, (uint)m_height);
+
+            if (spriteOfRenderTexture == null)
+                return;
+            spriteOfRenderTexture.Dispose();
+            spriteOfRenderTexture = new Sprite(renderTexture.Texture);
         }
 
         public void Run()
@@ -87,6 +120,9 @@ namespace Glacc.UI
 
             Settings.InitSettings();
 
+            SFML.Window.Styles style = SFML.Window.Styles.Titlebar | SFML.Window.Styles.Close;
+            if (resizable)
+                style |= SFML.Window.Styles.Resize;
             renderWindow = new RenderWindow
             (
                 new SFML.Window.VideoMode
@@ -95,7 +131,7 @@ namespace Glacc.UI
                     (uint)m_height
                 ),
                 m_title,
-                SFML.Window.Styles.Titlebar | SFML.Window.Styles.Close
+                style
             );
             // renderWindow.SetFramerateLimit(60);
             renderWindow.SetVerticalSyncEnabled(true);
@@ -104,6 +140,7 @@ namespace Glacc.UI
             spriteOfRenderTexture = new Sprite(renderTexture.Texture);
 
             renderWindow.Closed += OnClose;
+            renderWindow.Resized += OnResize;
 
             Event.ApplyEventHandlers(renderWindow);
 
