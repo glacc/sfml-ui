@@ -38,7 +38,7 @@ namespace Glacc.UI
                 m_height = value;
             }
         }
-        public bool resizable = false;
+        bool resizable = false;
 
         float m_updateTickrate = 60f;
         float timeEachUpdate;
@@ -203,11 +203,12 @@ namespace Glacc.UI
             afterClosing?.Invoke(this, EventArgs.Empty);
         }
 
-        public AppWindow(string title, int width, int height)
+        public AppWindow(string title, int width, int height, bool resizable = false)
         {
             m_title = title;
             m_width = width;
             m_height = height;
+            this.resizable = resizable;
         }
     }
 }
