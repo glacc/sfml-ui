@@ -117,5 +117,7 @@ namespace Glacc.UI.Elements
 
             drawables = new Drawable[] { sprite };
         }
+
+        public Viewport(int width, int height) : this(0, 0, width, height) { }
     }
 }

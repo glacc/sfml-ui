@@ -171,5 +171,7 @@ namespace Glacc.UI.Elements
             if (Settings.font != null)
                 font = Settings.font;
         }
+
+        public InputBox(int width, int height, string str = "") : this(0, 0, width, height, str) { }
     }
 }

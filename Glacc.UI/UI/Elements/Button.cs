@@ -124,5 +124,7 @@ namespace Glacc.UI.Elements
             if (Settings.font != null)
                 font = Settings.font;
         }
+
+        public Button(string text, int width, int height) : this(text, 0, 0, width, height) { }
     }
 }

@@ -273,5 +273,7 @@ namespace Glacc.UI.Components
 
             //UpdateDrawablePosition();
         }
+
+        public ScrollBar(int width, int length, ScrollBarDirection orientation = ScrollBarDirection.Vertical) : this(0, 0, width, length, orientation) { }
     }
 }

@@ -53,5 +53,7 @@ namespace Glacc.UI.Elements
             else
                 this.font = font;
         }
+
+        public Label(string text, int fontSize, Font? font = null) : this(text, 0, 0, fontSize, font) { }
     }
 }

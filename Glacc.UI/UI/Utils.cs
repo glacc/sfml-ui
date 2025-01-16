@@ -78,7 +78,7 @@ namespace Glacc.UI
             foreach (Drawable? drawable in drawables)
             {
                 if (drawable != null)
-                    target.Draw(drawable);
+                    target.Draw(drawable, Settings.renderStates);
             }
         }
 

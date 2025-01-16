@@ -21,6 +21,8 @@ namespace Glacc.UI
         public static char inputBoxCursor = '<';
         public static int inputBoxBlinkTime = 15;
 
+        public static RenderStates renderStates = RenderStates.Default;
+
         static bool inited = false;
 
         public static void LoadFont(string? fontFileName = null)

@@ -178,5 +178,7 @@ namespace Glacc.UI.Elements
             elements.Add(scrollHorz);
             elements.Add(scrollVert);
         }
+
+        public ScrollViewport(Viewport? viewport, int width, int height) : this(viewport, 0, 0, width, height) { }
     }
 }

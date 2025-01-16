@@ -35,6 +35,40 @@ namespace Glacc.UI
         }
         public static List<MouseState> mouseStateStack = new List<MouseState>();
 
+        public struct MousePosition
+        {
+            public int _mouseX = 0;
+            public int _mouseY = 0;
+            public int _mouseXold = 0;
+            public int _mouseYold = 0;
+            public int _mouseXvel = 0;
+            public int _mouseYvel = 0;
+            public int _mouseXpress = 0;
+            public int _mouseYpress = 0;
+
+            public MousePosition(float factor)
+            {
+                _mouseX = mouseX;
+                _mouseY = mouseY;
+                _mouseXold = mouseXold;
+                _mouseYold = mouseYold;
+                _mouseXvel = mouseXvel;
+                _mouseYvel = mouseYvel;
+                _mouseXpress = mouseXpress;
+                _mouseYpress = mouseYpress;
+
+                mouseX = (int)(mouseX * factor);
+                mouseY = (int)(mouseY * factor);
+                mouseXold = (int)(mouseXold * factor);
+                mouseYold = (int)(mouseYold * factor);
+                mouseXvel = (int)(mouseXvel * factor);
+                mouseYvel = (int)(mouseYvel * factor);
+                mouseXpress = (int)(mouseXpress * factor);
+                mouseYpress = (int)(mouseYpress * factor);
+            }
+        }
+        public static List<MousePosition> mousePositionStack = new List<MousePosition>();
+
         public static Viewport? currentViewport = null;
         public static Viewport? focusingViewport = null;
 
@@ -78,6 +112,24 @@ namespace Glacc.UI
             currentViewport = lastState.currentViewport;
 
             mouseStateStack.RemoveAt(mouseStateStack.Count - 1);
+        }
+
+        public static void PushPos(float factor)
+            => mousePositionStack.Add(new MousePosition(factor));
+
+        public static void PopPos()
+        {
+            MousePosition lastPosition = mousePositionStack.Last();
+            mouseX = lastPosition._mouseX;
+            mouseY = lastPosition._mouseY;
+            mouseXold = lastPosition._mouseXold;
+            mouseYold = lastPosition._mouseYold;
+            mouseXvel = lastPosition._mouseXvel;
+            mouseYvel = lastPosition._mouseYvel;
+            mouseXpress = lastPosition._mouseXpress;
+            mouseYpress = lastPosition._mouseYpress;
+
+            mousePositionStack.RemoveAt(mousePositionStack.Count - 1);
         }
 
         static class KeyPressReleaseList
@@ -206,6 +258,7 @@ namespace Glacc.UI
             KeyPressReleaseList.ClearPressReleaseList();
 
             mouseStateStack.Clear();
+            mousePositionStack.Clear();
 
             mouseAvailable = true;
 
