@@ -5,7 +5,7 @@ using System.Numerics;
 
 namespace Glacc.UI.Components
 {
-    public class Graph<T1, T2> : Element
+    public class Graph<T1, T2> : Element, IDisposable
         where T1 : INumber<T1>
         where T2 : INumber<T2>
     {
@@ -257,6 +257,11 @@ namespace Glacc.UI.Components
             this.height = height;
 
             UpdateTexture();
+        }
+
+        public void Dispose()
+        {
+            renderTexture?.Dispose();
         }
     }
 }

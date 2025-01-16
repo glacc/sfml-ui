@@ -2,7 +2,7 @@
 
 namespace Glacc.UI.Elements
 {
-    public class Viewport : Element
+    public class Viewport : Element, IDisposable
     {
         public int px;
         public int py;
@@ -119,5 +119,10 @@ namespace Glacc.UI.Elements
         }
 
         public Viewport(int width, int height) : this(0, 0, width, height) { }
+
+        public void Dispose()
+        {
+            texture?.Dispose();
+        }
     }
 }

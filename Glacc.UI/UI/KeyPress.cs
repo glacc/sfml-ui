@@ -1,6 +1,6 @@
 ﻿using SFML.Window;
 
-namespace Glacc.UI.KbdUtils
+namespace Glacc.UI.KeyPress
 {
     public class ConflictKeys
     {
