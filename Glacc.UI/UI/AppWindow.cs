@@ -13,7 +13,7 @@ namespace Glacc.UI
 
             set
             {
-                renderWindow?.SetTitle(value);
+                window?.SetTitle(value);
                 m_title = value;
             }
         }
@@ -53,8 +53,8 @@ namespace Glacc.UI
         }
         public int maxUpdateEachDraw = 10;
 
-        public RenderWindow? renderWindow = null;
-        public RenderTexture? renderTexture = null;
+        public RenderWindow? window = null;
+        public RenderTexture? texture = null;
         Sprite? spriteOfRenderTexture = null;
 
         public EventHandler<EventArgs>? userInit = null;
@@ -66,20 +66,20 @@ namespace Glacc.UI
         {
             if (appWindow == null)
                 return null;
-            if (appWindow.renderWindow == null)
+            if (appWindow.window == null)
                 return null;
 
-            RenderTarget? renderTarget = appWindow.renderWindow;
+            RenderTarget? renderTarget = appWindow.window;
 
             return renderTarget;
         }
 
         void OnClose(object? sender, EventArgs e)
-            => renderWindow?.Close();
+            => window?.Close();
 
         void OnResize(object? sender, SizeEventArgs e)
         {
-            if (renderWindow == null)
+            if (window == null)
                 return;
 
             uint newWidth = e.Width;
@@ -88,7 +88,7 @@ namespace Glacc.UI
             m_width = (int)newWidth;
             m_height = (int)newHeight;
 
-            renderWindow.SetView
+            window.SetView
             (
                 new View
                 (
@@ -102,30 +102,30 @@ namespace Glacc.UI
                 )
             );
 
-            if (renderTexture == null)
+            if (texture == null)
                 return;
-            renderTexture.Dispose();
-            renderTexture = new RenderTexture((uint)m_width, (uint)m_height);
+            texture.Dispose();
+            texture = new RenderTexture((uint)m_width, (uint)m_height);
 
             if (spriteOfRenderTexture == null)
                 return;
             spriteOfRenderTexture.Dispose();
-            spriteOfRenderTexture = new Sprite(renderTexture.Texture);
+            spriteOfRenderTexture = new Sprite(texture.Texture);
         }
 
         public void Run()
         {
-            if (renderWindow != null)
+            if (window != null)
                 return;
 
             Settings.InitSettings();
 
-            SFML.Window.Styles style = SFML.Window.Styles.Titlebar | SFML.Window.Styles.Close;
+            Styles style = Styles.Titlebar | Styles.Close;
             if (resizable)
-                style |= SFML.Window.Styles.Resize;
-            renderWindow = new RenderWindow
+                style |= Styles.Resize;
+            window = new RenderWindow
             (
-                new SFML.Window.VideoMode
+                new VideoMode
                 (
                     (uint)m_width,
                     (uint)m_height
@@ -134,15 +134,15 @@ namespace Glacc.UI
                 style
             );
             // renderWindow.SetFramerateLimit(60);
-            renderWindow.SetVerticalSyncEnabled(true);
+            window.SetVerticalSyncEnabled(true);
 
-            renderTexture = new RenderTexture((uint)m_width, (uint)m_height);
-            spriteOfRenderTexture = new Sprite(renderTexture.Texture);
+            texture = new RenderTexture((uint)m_width, (uint)m_height);
+            spriteOfRenderTexture = new Sprite(texture.Texture);
 
-            renderWindow.Closed += OnClose;
-            renderWindow.Resized += OnResize;
+            window.Closed += OnClose;
+            window.Resized += OnResize;
 
-            Event.ApplyEventHandlers(renderWindow);
+            Event.ApplyEventHandlers(window);
 
             userInit?.Invoke(this, EventArgs.Empty);
 
@@ -152,9 +152,9 @@ namespace Glacc.UI
             float timeAfterLastUpdate = timeEachUpdate;
             Stopwatch stopwatch = new Stopwatch();
 
-            while (renderWindow.IsOpen)
+            while (window.IsOpen)
             {
-                Event.Update(renderWindow, drawAndResetState, true);
+                Event.Update(window, drawAndResetState, true);
                 drawAndResetState = false;
 
                 stopwatch.Stop();
@@ -177,11 +177,11 @@ namespace Glacc.UI
 
                     if (firstUpdate)
                     {
-                        renderTexture.Clear(Settings.bgColor);
+                        texture.Clear(Settings.bgColor);
 
                         userDraw?.Invoke(this, EventArgs.Empty);
 
-                        renderTexture.Display();
+                        texture.Display();
                     }
 
                     Event.ResetState();
@@ -194,9 +194,9 @@ namespace Glacc.UI
                     }
                 }
 
-                renderWindow.Draw(spriteOfRenderTexture);
+                window.Draw(spriteOfRenderTexture);
 
-                renderWindow.Display();
+                window.Display();
             }
 
             afterClosing?.Invoke(this, EventArgs.Empty);

@@ -37,7 +37,7 @@ namespace Glacc.UI.Elements
 
         Drawable[] drawables;
 
-        protected virtual void UpdateSizeCustom(bool diff) { }
+        protected virtual void UpdateSizeCustom(bool isSizeDifferentThanBefore) { }
 
         public void UpdateSize()
         {
@@ -95,9 +95,9 @@ namespace Glacc.UI.Elements
 
             texture.Clear(bgColor);
 
-            Utils.DrawElements(elements, texture);
-
             Utils.DrawArray(DrawCustom(), texture);
+
+            Utils.DrawElements(elements, texture);
 
             texture.Display();
 

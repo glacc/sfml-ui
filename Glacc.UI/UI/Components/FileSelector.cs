@@ -482,5 +482,7 @@ namespace Glacc.UI.Components
 
             ListDir();
         }
+
+        public FileSelector(string? path, int width, int height) : this(path, 0, 0, width, height) { }
     }
 }
