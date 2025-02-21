@@ -169,9 +169,6 @@ namespace Glacc.UI
 
                     Event.UpdateState();
 
-                    if (firstUpdate)
-                        renderTexture.Clear(Settings.bgColor);
-
                     userUpdate?.Invoke(this, EventArgs.Empty);
 
                     drawAndResetState = true;
@@ -180,6 +177,8 @@ namespace Glacc.UI
 
                     if (firstUpdate)
                     {
+                        renderTexture.Clear(Settings.bgColor);
+
                         userDraw?.Invoke(this, EventArgs.Empty);
 
                         renderTexture.Display();

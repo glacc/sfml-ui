@@ -2,7 +2,7 @@
 
 namespace Glacc.UI.KeyPress
 {
-    public class ConflictKeys
+    public class NeutralKeys
     {
         Keyboard.Scancode key1;
         Keyboard.Scancode key2;
@@ -37,7 +37,7 @@ namespace Glacc.UI.KeyPress
             }
         }
 
-        public ConflictKeys(Keyboard.Scancode key1, Keyboard.Scancode key2, KeyDownEvent? keyDownEvent = null, KeyUpEvent? keyUpEvent = null)
+        public NeutralKeys(Keyboard.Scancode key1, Keyboard.Scancode key2, KeyDownEvent? keyDownEvent = null, KeyUpEvent? keyUpEvent = null)
         {
             this.key1 = key1;
             this.key2 = key2;

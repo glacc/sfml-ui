@@ -377,6 +377,69 @@ namespace Glacc.UI.Components
             currPage = page;
         }
 
+        void RepositionElements(bool init = false)
+        {
+            const int elemSpacing = 8;
+            const int elemHeight = 24;
+
+            btnCancel.px = elemSpacing;
+            btnCancel.py = elemSpacing;
+            btnCancel.width = 96;
+            btnCancel.height = elemHeight;
+
+            int startXOfDirectoryIpb = elemSpacing + btnCancel.width + elemSpacing;
+            ipbPath.px = startXOfDirectoryIpb;
+            ipbPath.py = elemSpacing;
+            ipbPath.width = width - startXOfDirectoryIpb - elemSpacing;
+            ipbPath.height = elemHeight;
+
+            int widthOfDirectoryListingViewport = width - (elemSpacing * 2);
+            widthOfDirectoryListing = widthOfDirectoryListingViewport - 16;
+            int startYOfDirectoryListing = elemSpacing + elemHeight + elemSpacing;
+            int heightOfDirectoryListing = height - startYOfDirectoryListing - elemSpacing - elemHeight - elemSpacing;
+            int endYOfDirectoryListing = startYOfDirectoryListing + heightOfDirectoryListing;
+            directoryListing.px = elemSpacing;
+            directoryListing.py = startYOfDirectoryListing;
+            directoryListing.width = widthOfDirectoryListing;
+            if (init)
+                directoryListing.height = 24;
+            directoryListing.UpdateSize();
+            directoryListingViewport.px = elemSpacing;
+            directoryListingViewport.py = startYOfDirectoryListing;
+            directoryListingViewport.width = widthOfDirectoryListingViewport;
+            directoryListingViewport.height = heightOfDirectoryListing;
+            directoryListingViewport.UpdateSize();
+
+            if (!init)
+            {
+                const int btnSpacing = 4;
+                int directoryListingButtonWidth = directoryListing.width - (btnSpacing * 2);
+
+                foreach (Element? elem in directoryListing.elements)
+                {
+                    Button? directoryListingItem = elem as Button;
+                    if (directoryListingItem != null)
+                        directoryListingItem.width = directoryListingButtonWidth;
+                }
+            }
+
+            const int btnWidth = 64;
+            const int btnXInc = btnWidth + elemSpacing;
+            int btnX = elemSpacing;
+            int btnY = endYOfDirectoryListing + elemSpacing;
+            prevBtn.px = btnX;
+            prevBtn.py = btnY;
+            btnX += btnXInc;
+            pageLabel.px = btnX + (btnWidth / 2);
+            pageLabel.py = btnY + (elemHeight / 2);
+            btnX += btnXInc;
+            nextBtn.px = btnX;
+            nextBtn.py = btnY;
+        }
+
+        protected override void UpdateSizeCustom(bool diff)
+            => RepositionElements();
+
         protected override void UpdateCustom()
         {
             if (toRelist)
@@ -390,42 +453,32 @@ namespace Glacc.UI.Components
         {
             SetDir(path);
 
-            int elemSpacing = 8;
-            int elemHeight = 24;
+            const int elemHeight = 24;
 
-            btnCancel = new Button("Cancel", elemSpacing, elemSpacing, 96, elemHeight);
+            btnCancel = new Button("Cancel", 96, elemHeight);
             btnCancel.onClick += OnCancelClicked;
             elements.Add(btnCancel);
 
-            int startXOfDirectoryIpb = elemSpacing + btnCancel.width + elemSpacing;
-            ipbPath = new InputBox(startXOfDirectoryIpb, elemSpacing, width - startXOfDirectoryIpb - elemSpacing, elemHeight);
+            ipbPath = new InputBox();
             ipbPath.onEnterPressed += OnPathEntered;
             elements.Add(ipbPath);
 
-            int widthOfDirectoryListingViewport = width - (elemSpacing * 2);
-            widthOfDirectoryListing = widthOfDirectoryListingViewport - 16;
-            int startYOfDirectoryListing = elemSpacing + elemHeight + elemSpacing;
-            int heightOfDirectoryListing = height - startYOfDirectoryListing - elemSpacing - elemHeight - elemSpacing;
-            int endYOfDirectoryListing = startYOfDirectoryListing + heightOfDirectoryListing;
-            directoryListing = new Viewport(elemSpacing, startYOfDirectoryListing, widthOfDirectoryListing, 24);
-            directoryListingViewport = new ScrollViewport(directoryListing, elemSpacing, startYOfDirectoryListing, widthOfDirectoryListingViewport, heightOfDirectoryListing);
+            directoryListing = new Viewport(128, 128);
+            directoryListingViewport = new ScrollViewport(directoryListing, 128, 128);
             elements.Add(directoryListingViewport);
 
-            int btnWidth = 64;
-            int btnXInc = btnWidth + elemSpacing;
-            int btnX = elemSpacing;
-            int btnY = endYOfDirectoryListing + elemSpacing;
-            prevBtn = new Button("Prev", btnX, btnY, btnWidth, elemHeight);
+            const int btnWidth = 64;
+            prevBtn = new Button("Prev", btnWidth, elemHeight);
             prevBtn.onClick += OnPrevClicked;
-            btnX += btnXInc;
-            pageLabel = new Label("", btnX + (btnWidth / 2), btnY + (elemHeight / 2), 16);
+            pageLabel = new Label("", 16);
             pageLabel.textAlign = TextAlign.Center;
-            btnX += btnXInc;
-            nextBtn = new Button("Next", btnX, btnY, btnWidth, elemHeight);
+            nextBtn = new Button("Next", btnWidth, elemHeight);
             nextBtn.onClick += OnNextClicked;
             elements.Add(prevBtn);
             elements.Add(pageLabel);
             elements.Add(nextBtn);
+
+            RepositionElements(true);
 
             ListDir();
         }

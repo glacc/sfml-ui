@@ -173,5 +173,7 @@ namespace Glacc.UI.Elements
         }
 
         public InputBox(int width, int height, string str = "") : this(0, 0, width, height, str) { }
+
+        public InputBox(string str = "") : this(0, 0, 0, 0, str) { }
     }
 }
