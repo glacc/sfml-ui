@@ -7,7 +7,7 @@ namespace Glacc.UI.Components
 {
     public class FileSelector : Viewport
     {
-        public int maxItemPerPage = 128;
+        public int maxItemPerPage = 100;
         public string lastSelectedFilePath = string.Empty;
 
         DirectoryInfo? dirInfo;
@@ -19,6 +19,22 @@ namespace Glacc.UI.Components
         Viewport directoryListing;
         ScrollViewport directoryListingViewport;
         int widthOfDirectoryListing;
+
+        public Color directoryListingColor
+        {
+            set
+            {
+                directoryListing.bgColor = Color.Transparent;
+                directoryListingViewport.bgColor = value;
+            }
+
+            get => directoryListingViewport.bgColor;
+        }
+        public Color pageLabelColor
+        {
+            set => pageLabel.color = value;
+            get => pageLabel.color;
+        }
 
         Label pageLabel;
         Button prevBtn;
@@ -180,8 +196,11 @@ namespace Glacc.UI.Components
             ListDir(currPage, maxItemPerPage);
         }
 
-        void ListDir(int page = 0, int maxItemPerPage = 128)
+        void ListDir(int page = 0, int maxItemPerPage = -1)
         {
+            if (maxItemPerPage < 0)
+                maxItemPerPage = this.maxItemPerPage;
+
             directoryListing.elements.Clear();
 
             int btnSpacing = 4;
@@ -263,7 +282,7 @@ namespace Glacc.UI.Components
                 FileInfo[] listOfFileInfo = dirInfo.GetFiles();
 
                 int numOfItems = listOfDirInfo.Length + listOfFileInfo.Length;
-                int numOfitemsToList = ((numOfItems > maxItemPerPage) ? maxItemPerPage : numOfItems);
+                int numOfItemsToList = ((numOfItems > maxItemPerPage) ? maxItemPerPage : numOfItems);
 
                 if (numOfItems > 0)
                 {
@@ -280,12 +299,17 @@ namespace Glacc.UI.Components
                 if (page > maxPage)
                     page = maxPage;
 
-                if (page == maxPage)
-                    numOfitemsToList = numOfItems % maxItemPerPage;
-                if (numOfitemsToList == 0)
-                    numOfitemsToList = maxItemPerPage;
+                if (numOfItems > 0)
+                {
+                    if (page == maxPage)
+                        numOfItemsToList = numOfItems % maxItemPerPage;
+                    if (numOfItemsToList == 0)
+                        numOfItemsToList = maxItemPerPage;
+                }
+                else
+                    numOfItemsToList = 0;
 
-                int newDirectoryListingHeight = btnSpacing + (btnYInc * (numOfitemsToList + preservedItems));
+                int newDirectoryListingHeight = btnSpacing + (btnYInc * (numOfItemsToList + preservedItems));
                 directoryListing.width = directoryListing.width;
                 directoryListing.height = newDirectoryListingHeight;
                 directoryListing.UpdateSize();
