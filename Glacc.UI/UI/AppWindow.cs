@@ -1,4 +1,5 @@
 ﻿using SFML.Graphics;
+using SFML.System;
 using SFML.Window;
 using System.Diagnostics;
 
@@ -72,6 +73,28 @@ namespace Glacc.UI
             RenderTarget? renderTarget = appWindow.window;
 
             return renderTarget;
+        }
+
+        public void SetSize(int width, int height, bool checkWhetherTheSizeIsTheSame = false)
+        {
+            if ((width == m_width || height == m_height) && checkWhetherTheSizeIsTheSame)
+                return;
+
+            m_width = width;
+            m_height = height;
+
+            if (window == null)
+                return;
+
+            window.Size = new Vector2u((uint)width, (uint)height);
+
+            SizeEvent sizeEvent = new SizeEvent();
+            sizeEvent.Width = (uint)width;
+            sizeEvent.Height = (uint)height;
+            OnResize(
+                window,
+                new SizeEventArgs(sizeEvent)
+            );
         }
 
         void OnClose(object? sender, EventArgs e)
