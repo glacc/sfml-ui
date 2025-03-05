@@ -77,7 +77,7 @@ namespace Glacc.UI
 
         public void SetSize(int width, int height, bool checkWhetherTheSizeIsTheSame = false)
         {
-            if ((width == m_width || height == m_height) && checkWhetherTheSizeIsTheSame)
+            if ((width == m_width && height == m_height) && checkWhetherTheSizeIsTheSame)
                 return;
 
             m_width = width;
