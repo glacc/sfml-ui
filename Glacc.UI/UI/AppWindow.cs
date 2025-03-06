@@ -41,6 +41,8 @@ namespace Glacc.UI
         }
         bool resizable = false;
 
+        public bool allowTransparentWindow = false;
+
         float m_updateTickrate = 60f;
         float timeEachUpdate;
         public float updateTickrate
@@ -184,6 +186,9 @@ namespace Glacc.UI
                 double elaspedMs = stopwatch.Elapsed.TotalMilliseconds;
                 stopwatch.Restart();
                 timeAfterLastUpdate += (float)elaspedMs;
+
+                if (allowTransparentWindow)
+                    window.Clear(Color.Transparent);
 
                 int updateCount = 0;
                 while (timeAfterLastUpdate >= timeEachUpdate)
