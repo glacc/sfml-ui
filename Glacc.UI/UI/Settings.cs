@@ -33,6 +33,7 @@ namespace Glacc.UI
             string assemblyPath = string.Join('\\', Assembly.GetExecutingAssembly().Location.Split("\\").SkipLast(1));
             string fontFilePath = Path.Combine(assemblyPath, fontFileName);
 
+            font?.Dispose();
             font = new Font(fontFilePath);
         }
 
