@@ -42,7 +42,8 @@ namespace Glacc.UI
             if (inited)
                 return;
 
-            LoadFont();
+            if (font == null)
+                LoadFont();
 
             inited = true;
         }
