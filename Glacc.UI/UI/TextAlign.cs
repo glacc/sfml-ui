@@ -1,4 +1,6 @@
-﻿namespace Glacc.UI
+﻿// SPDX-License-Identifier: LGPL-3.0-only
+
+namespace Glacc.UI
 {
     public enum TextAlign
     {

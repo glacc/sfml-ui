@@ -1,4 +1,6 @@
-﻿using Glacc.UI.Elements;
+﻿// SPDX-License-Identifier: LGPL-3.0-only
+
+using Glacc.UI.Elements;
 using SFML.Window;
 
 namespace Glacc.UI

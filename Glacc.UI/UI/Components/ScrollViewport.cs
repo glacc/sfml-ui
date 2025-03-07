@@ -1,4 +1,5 @@
-﻿
+﻿// SPDX-License-Identifier: LGPL-3.0-only
+
 using Glacc.UI.Components;
 using SFML.Graphics;
 

@@ -1,4 +1,6 @@
-﻿using SFML.Graphics;
+﻿// SPDX-License-Identifier: LGPL-3.0-only
+
+using SFML.Graphics;
 using Glacc.UI.Elements;
 using System.Reflection;
 using System.Runtime.InteropServices;
